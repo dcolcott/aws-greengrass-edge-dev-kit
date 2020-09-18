@@ -11,22 +11,26 @@ Code examples include standalone and AWS Lambda python code for:
 * Generic GPIO I/O.
 
 #### AWS Greengrass Development Kit V1
-![pics/v1/dev-kit-front-back.png](pics/v1/dev-kit-front-back.png)
+![AWS Greengrass Development Kit V1](pics/v1/dev-kit-front-back.png)
 
 #### AWS Greengrass Development Kit V1 - Lid Off
-![pics/v1/dev-kit-front-back.png](pics/v1/dev-kit-lid-off.png)
+![AWS Greengrass Development Kit V1 - Lid Off](pics/v1/dev-kit-lid-off.png)
 
-#### AWS Greengrass Development Kit V1 - Lid Off
-![pics/v1/dev-kit-front-back.png](pics/v1/dev-kit-expanded.png)
+#### AWS Greengrass Development Kit V1 - Expanded
+![AWS Greengrass Development Kit V1 - Expanded](pics/v1/dev-kit-expanded.png)
 
 
+#### AWS Greengrass Development Kit V1 - CAD Designs
 
-3D printed enclosure (3D STL files included) containing:
-*  A Raspberry Pi4
+3D printed enclosure and internal standoffs (3D STL files included) containing :
+* A Raspberry Pi4
 * GPIO Controlled 250v/10A Relay board
 * Intel Neural Compute Stick,
 * Mount for Intel d354i Realsense 3D camera (or any supported USB WebCam)
 
+![AWS Greengrass Development Kit V1 - CAD Front - Back](pics/v1/dev-kit-cad-front-back.png)
+
+![AWS Greengrass Development Kit V1 - CAD Lid Off](pics/v1/dev-kit-cad-lid-off.png)
 
 
 
