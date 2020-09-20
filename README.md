@@ -23,11 +23,7 @@ Code examples include standalone and AWS Lambda python code for:
 
 #### AWS Greengrass Development Kit V1 - CAD Designs
 
-3D printed enclosure and internal standoffs (3D STL files included) containing:
-* A Raspberry Pi4
-* GPIO Controlled 250v/10A Relay board
-* Intel Neural Compute Stick,
-* Mount for Intel d354i RealSense 3D camera (or any supported USB Webcam)
+3D printed enclosure and internal standoffs (3D print STL files) included:
 
 ![AWS Greengrass Development Kit V1 - CAD Front - Back](pics/v1/dev-kit-cad-front-back.png)
 
