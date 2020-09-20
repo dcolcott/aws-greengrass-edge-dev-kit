@@ -22,7 +22,7 @@ This section contains all the .STL files and descriptions needed to 3d print the
 
 #### AWS Greengrass Development Kit V1 - Top Cover Alignment Issues
 
-As of V1 of the AWS Greengrass development kit we are still dealing with some alignment and internal wiring design changes to the 3D printed components. Because of this we don't recommend printing at least the top enclosure at the moment. We will have an update to this problem soon. alignment
+As of V1 of the AWS Greengrass development kit we are still dealing with some alignment and internal wiring design changes to the 3D printed components. Because of this we don't recommend printing at least the top enclosure at the moment. We will have an update to this problem soon.
 
 ![AWS Greengrass Development Kit V1 – USB Alignment](pics/usb-alignment.png)
 
