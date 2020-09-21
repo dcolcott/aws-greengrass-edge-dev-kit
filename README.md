@@ -5,8 +5,9 @@ Universal AWS IoT Greengrass edge development kit with ML Object Detection and D
 The pièce de résistance however is an Intel RealSense d453i depth perception camera and the Intel Neural Compute Stick 2 providing 3D and depth image ML inference on the edge with Hardware accelerated neural processing. These are optional components depending on your budget (the project supports a simple webcam as well) but they go a long way to showing the kind of advanced peripheries and use-cases you can serve on the edge with AWS Greengrass. 
 
 Code examples include standalone and AWS Lambda python code for:
-* Capture synchronised RealSense RBG and Depth Image,
-* Perform Image Inference on MXMET ML Model native on Raspberry Pi (So you don't need the Compute Stick)
+* Capture synchronised RealSense RBG and Depth Image for inference and processing,
+* Capture a USB Webcam image for inference (So depending in budget you don't need the Realsense Camera)
+* Perform Image Inference on Mxnet Model on Ras Pi CPU (So depending on budget you don't need the Compute Stick)
 * Perform Image Inference on Intel Neural Compute Stick 2
 * Capture local temperature from a I2C interface,
 * Actuate GPIO Relay Board
