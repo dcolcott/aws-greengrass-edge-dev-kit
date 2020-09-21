@@ -2,14 +2,14 @@
 
 #### Intel RealSense d435/d415 Camera Code Examples
 
-in this directory you will find standalone and AWS Greengrass / Lambda examples for how to connect to the Intel RealSense d345 camera on the Raspberry Pi (or other AWS Greengrass device) and capture an RBG and Depth image then take a depth measurement to the center of the frame. The depth data is logged to SysOut and in the case of the AWS Greengrass example, is posted over MQTT back to the AWS IoT core for analysis or other action.
+In this directory you will find standalone and AWS Greengrass / Lambda examples for how to connect to the Intel RealSense d345 camera on the Raspberry Pi (or other AWS Greengrass device) and capture an RBG and Depth image then take a depth measurement to the center of the frame. The depth data is logged to SysOut and in the case of the AWS Greengrass example, is posted over MQTT back to the AWS IoT core for analysis or other action.
 
 Code examples in this directory:
 1) **realsense-simple.py:** Standalone and Lambda example for interacting with the RealSense Camera using default settings and no image post-processing.
 1) **realsense-advanced.py:** Standalone and Lambda example for interacting with the RealSense Camera using a selection of pre-set configurations for different requirements with image post-processing and resizing. 
 
 #### Intel RealSense Colorised Depth Image
-All going well you will save a unprocessed (realsense-simple.py) and a processed and unprocessed (realsense-advanced.py) colorised depth image as shown below.
+All going well you will save an unprocessed (realsense-simple.py) and a processed and unprocessed (realsense-advanced.py) colorised depth image as shown below.
 
 ![RealSense Depth Image](./pics/realsense-depth-image.png)
 

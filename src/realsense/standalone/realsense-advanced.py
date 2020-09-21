@@ -21,7 +21,7 @@ import cv2
 # Config the logger.
 log.basicConfig(format="[ %(levelname)s ] %(message)s", level=log.INFO, stream=sys.stdout)
 
-PRESET_CONFIG = "preset-configs/DefaultPreset_D435.json"
+PRESET_CONFIG = "../preset-configs/DefaultPreset_D435.json"
 
 # Image file save location.
 DEPTH_IMAGE_PATH = '/home/pi/Desktop/depth_image.jpg'
@@ -35,7 +35,7 @@ class RealsenseDevice():
     """
     def __init__(self):
 
-        log.info('Initilising Realsense Camera')
+        log.info('Initialising Realsense Camera')
         # Configure realsense device, 
         self.pipeline = rs.pipeline()
         self.config = rs.config()
@@ -56,7 +56,7 @@ class RealsenseDevice():
 
         self.rs_name = self.profile.get_device().get_info(rs.camera_info.name)
         self.rs_serial = self.profile.get_device().get_info(rs.camera_info.serial_number)
-        log.info('{} - Serial:{} Successfully Initilised'.format(self.rs_name, self.rs_serial))
+        log.info('{} - Serial:{} Successfully Initialised'.format(self.rs_name, self.rs_serial))
 
     def set_stream_config(self, config_file):
         # Configure advanced mode settings taken from realsense-viewer
@@ -81,7 +81,7 @@ class RealsenseDevice():
 
         try:
             # Skip 5 first frames to give the Auto-Exposure time to adjust
-            log.info('Caputure realsense image - waiting for auto-exposure to adjust')
+            log.info('Captured realsense image - waiting for auto-exposure to adjust')
             for x in range(5):
                self.pipeline.wait_for_frames()
                log.info('Captured wait frame: {}'.format(x))
@@ -203,7 +203,8 @@ class RealsenseDevice():
         center_height = int(self.depth_frame.get_height() / 2)
 
         zDepth = self.depth_frame.get_distance(center_width, center_height)
-        print('Distance to image center at {} x {} is: {}'.format(center_width, center_height, zDepth))
+        zDepth = '{:.2f}'.format(zDepth)
+        print('Distance to image center at {} x {} is: {} meters'.format(center_width, center_height, zDepth))
 
 if __name__ == "__main__":
     # Save the image to Pi Desktop to test

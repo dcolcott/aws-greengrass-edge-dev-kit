@@ -29,7 +29,7 @@ class RealsenseDevice():
 
     def __init__(self):
 
-        log.info('Initilising Realsense Camera')
+        log.info('Initialising Realsense Camera')
         # Configure realsense device, 
         self.pipeline = rs.pipeline()
         self.config = rs.config()
@@ -44,13 +44,13 @@ class RealsenseDevice():
 
         self.rs_name = self.profile.get_device().get_info(rs.camera_info.name)
         self.rs_serial = self.profile.get_device().get_info(rs.camera_info.serial_number)
-        log.info('{} - Serial:{} Successfully Initilised'.format(self.rs_name, self.rs_serial))
+        log.info('{} - Serial:{} Successfully Initialised'.format(self.rs_name, self.rs_serial))
 
     def capture_image(self):
 
         try:
             # Skip 5 first frames to give the Auto-Exposure time to adjust
-            log.info('Caputure realsense image - waiting for auto-exposure to adjust')
+            log.info('Captured realsense image - waiting for auto-exposure to adjust')
             for x in range(5):
                self.pipeline.wait_for_frames()
                log.info('Captured wait frame: {}'.format(x))
