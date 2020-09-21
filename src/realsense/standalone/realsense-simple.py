@@ -1,6 +1,10 @@
+# realsense-simple.py
 #
+# Takes colour and depth image from the Intel RelSense 3D camera
+# Detects the distance to the center of the image frame and logs to SysOut. 
+# Uses default settings and no image post-processing. 
 #
-# Takes colour and depth image from the Intel RelSense 3d camera
+# Author: Dean Colcott - https://www.linkedin.com/in/deancolcott/
 #
 #
 import pyrealsense2 as rs
@@ -14,9 +18,9 @@ import cv2
 log.basicConfig(format="[ %(levelname)s ] %(message)s", level=log.INFO, stream=sys.stdout)
 
 # Image file save location.
-depth_image_path = '/home/pi/Desktop/depth_image.jpg'
-depth_colourmap_path = '/home/pi/Desktop/depth_colormap.jpg'
-color_image_path = '/home/pi/Desktop/color_image.jpg'
+DEPTH_IMAGE_PATH = '/home/pi/Desktop/depth_image.jpg'
+DEPTH_COLORMAP_PATH= '/home/pi/Desktop/depth_colormap.jpg'
+COLOR_IMAGE_PATH = '/home/pi/Desktop/color_image.jpg'
 
 class RealsenseDevice():
     """
@@ -75,9 +79,9 @@ class RealsenseDevice():
                 self.depth_colormap = np.asanyarray(rs.colorizer().colorize(self.depth_frame).get_data())
 
                 # Save depth and color image to local file as JPG
-                cv2.imwrite(depth_image_path, self.depth_image)
-                cv2.imwrite(depth_colourmap_path, self.depth_colormap)
-                cv2.imwrite(color_image_path, self.color_image)
+                cv2.imwrite(DEPTH_IMAGE_PATH, self.depth_image)
+                cv2.imwrite(DEPTH_COLORMAP_PATH, self.depth_colormap)
+                cv2.imwrite(COLOR_IMAGE_PATH, self.color_image)
 
                 self.get_distance_to_image_center()
                 time.sleep(1.0)

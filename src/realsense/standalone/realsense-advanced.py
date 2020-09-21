@@ -1,9 +1,13 @@
+# realsense-advanced.py
 #
-# Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Takes colour and depth image from the Intel RelSense 3D camera
+# Detects the distance to the center of the image frame and logs to SysOut. 
+# Apply's Realsense RS400 advanced settings form pre-configured visual presets
 #
-# Takes and if needed resizes a colour or depth image from the Intel RelSense 3d camera
-# 
-# Visual presets from: https://github.com/IntelRealSense/librealsense/wiki/D400-Series-Visual-Presets
+# Author: Dean Colcott - https://www.linkedin.com/in/deancolcott/
+#
+# Credits: Examples from  https://github.com/IntelRealSense/librealsense
+# Visual presets based on: https://github.com/IntelRealSense/librealsense/wiki/D400-Series-Visual-Presets
 #
 #
 import pyrealsense2 as rs
@@ -17,12 +21,13 @@ import cv2
 # Config the logger.
 log.basicConfig(format="[ %(levelname)s ] %(message)s", level=log.INFO, stream=sys.stdout)
 
+PRESET_CONFIG = "preset-configs/DefaultPreset_D435.json"
+
 # Image file save location.
-depth_image_path = '/home/pi/Desktop/depth_image.jpg'
-pointcloud_path = '/home/pi/Desktop/pointcloud.ply'
-depth_colourmap_path = '/home/pi/Desktop/depth_colormap.jpg'
-processed_depth_colourmap_path = '/home/pi/Desktop/processed_depth_colormap.jpg'
-color_image_path = '/home/pi/Desktop/color_image.jpg'
+DEPTH_IMAGE_PATH = '/home/pi/Desktop/depth_image.jpg'
+DEPTH_COLORMAP_PATH= '/home/pi/Desktop/depth_colormap.jpg'
+PROCESSED_DEPTH_COLORMAP_PATH = '/home/pi/Desktop/processed_depth_colormap.jpg'
+COLOR_IMAGE_PATH = '/home/pi/Desktop/color_image.jpg'
 
 class RealsenseDevice():
     """
@@ -37,7 +42,7 @@ class RealsenseDevice():
         self.profile = self.config.resolve(self.pipeline)
 
         # Load stream values from predefined config file. 
-        self.set_stream_config("preset-configs/DefaultPreset_D435.json")
+        self.set_stream_config(PRESET_CONFIG)
 
         # Configure depth and color streams (could also add IR stream if desired)
         self.config.enable_stream(rs.stream.depth, self.stream_width, self.stream_height, rs.format.z16, self.stream_fps)
@@ -113,10 +118,10 @@ class RealsenseDevice():
                 self.resize_images(resize_width, resize_height)
 
                 # Save depth and color image to local file as JPG
-                cv2.imwrite(depth_image_path, self.depth_image)
-                cv2.imwrite(depth_colourmap_path, self.depth_colormap)
-                cv2.imwrite(processed_depth_colourmap_path, self.processed_depth_colormap)
-                cv2.imwrite(color_image_path, self.color_image)
+                cv2.imwrite(DEPTH_IMAGE_PATH, self.depth_image)
+                cv2.imwrite(DEPTH_COLORMAP_PATH, self.depth_colormap)
+                cv2.imwrite(PROCESSED_DEPTH_COLORMAP_PATH, self.processed_depth_colormap)
+                cv2.imwrite(COLOR_IMAGE_PATH, self.color_image)
 
                 self.get_distance_to_image_center()
 
