@@ -16,8 +16,6 @@ import cv2
 from threading import Timer
 import greengrasssdk
 
-resourcePath = "{}{}".format(os.getenv("AWS_GG_RESOURCE_PREFIX"), "/trained_models")
-
 # Local vars for update and image save path.
 framerate_update_interval = 10  # Interval (in seconds) to publish received framerate to MQTT
 depth_image_path = '/home/pi/depth_image.jpg'
@@ -99,7 +97,7 @@ def greengrass_realsense_save_images():
   except Exception as e:
     logger.error("ERROR greengrass_realsense_save_images():" + repr(e))
     client.publish(
-        topic="dcolcott/raspi4/realsense/error",
+        topic="gg-edge-kit/realsense/error",
         queueFullPolicy="AllOrException",
         payload="ERROR: {}".format(repr(e))
     )

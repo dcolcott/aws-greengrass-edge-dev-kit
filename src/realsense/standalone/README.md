@@ -9,7 +9,7 @@ To execute:
 * python3 realsense-advanced.py
 
 **Example:** The expected output is as below:
-'''
+```
 python3 realsense-advanced.py 
 [ INFO ] Initialising RealSense Camera
 [ INFO ] Intel RealSense D435I - Serial:123456789101 Successfully Initialised
@@ -26,5 +26,5 @@ Distance to image center at 320 x 240 is: 0.21 meters
 Distance to image center at 320 x 240 is: 0.18 meters
 Distance to image center at 320 x 240 is: 3.05 meters
 Distance to image center at 320 x 240 is: 2.96 meters
-'''
+```
 
