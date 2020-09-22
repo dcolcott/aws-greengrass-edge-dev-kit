@@ -1,6 +1,6 @@
 # AWS Greengrass Edge Development Kit
 
-#### Intel RealSense Code Examples
+#### Intel RealSense Standalone (locally executable, not AWS Lambda) Code Examples
 
 Code examples in this directory can run as standalone Python3 scripts.
 

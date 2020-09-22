@@ -76,11 +76,16 @@ def greengrass_realsense_depth():
 
 # Start the image capture and 'framerate_update_interval' seconds later start post_frame_rate()
 post_log('Initialising Real Sense Device', 'gg-edge-kit/realsense')
-rs_simple = RealsenseSimple()
+
+# Select the simple or advance config and feature set by swapping the rs_device comment below:
+rs_device = RealsenseSimple()
+# rs_device = RealsenseAdvanced()
+
+# Start the greengrass_realsense_depth() and framerate_update_interval as threads. 
 Timer(0, greengrass_realsense_depth()).start()
 Timer(framerate_update_interval, post_frame_rate).start()
 
 # This is a dummy handler for AWS lambda and will not be invoked
 # Instead the code above will be executed in an infinite loop for our example
-def function_handler(event, context):
+def lambda_handler(event, context):
     return
