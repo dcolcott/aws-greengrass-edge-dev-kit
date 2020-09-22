@@ -1,6 +1,6 @@
 # AWS Greengrass Edge Development Kit
 
-#### Intel RealSense AWS lambda / Greengrass Code Examples
+### Intel RealSense AWS lambda / Greengrass Code Examples
 
 Code examples in this directory can be deployed as AWS Greengrass Lambda's to access the RealSense camera on edge devices managed by AWS Greengrass and IoT Core.
 
@@ -19,26 +19,26 @@ Both classes offer the below functions:
 #### Package and Deploy the Lambda
 Pre-packaged  **realsense-simple-lambda.zip** and **realsense-advanced-lambda.zip** files are provided and ready to deploy to AWS. 
 
-**To Deploy the ZIPs to Lambda**:
+### To Deploy the ZIPs to Lambda:
 * In the AWS Console go to the **Lambda service** and select **Create Function**:
 ![Create Lambda Function](pics/deploy-lambda-01.png)
 
 * In the **Create function** page:
-    * Select *Author from scratch**, 
-    * Enter the *Function Name**, in this case use **gg_realsense_depth**
+    * Select **Author from scratch**, 
+    * Enter the **Function Name**, in this case use **gg_realsense_depth**
     * For **Runtime** select **Python 3.7**
     * If not done for a previous Lambda, you may need to **Create an execution role**
-    * Click **Create function**
+    * Click **Create function:**
 ![Create Lambda Function](pics/deploy-lambda-02.png)
 
-* Once cvreated, in the Lambda **Function Code** click **Actions** and select **Upload a .zip file**
+* Once created, in the Lambda **Function Code** click **Actions** and select **Upload a .zip file**
     * Select the zipped lambda function you wish to deploy.
 ![Create Lambda Function](pics/deploy-lambda-03.png)
 
-**NOte:** For more detail on how to package and deploy an AWS GreenGrass Lambda see: 
+**Note:** For more detail on how to package and deploy an AWS GreenGrass Lambda see: 
 [Create and package a Lambda function](https://docs.aws.amazon.com/greengrass/latest/developerguide/create-lambda.html)
 
-#### Simple and Advanced RealSense modes:
+### Simple and Advanced RealSense modes:
 To swap between the simple and advanced RealSense options, just update the below code in **lambda_function.py** to suit:
 ```
 # Select the simple or advance config and feature set by swapping the rs_device comment below:
