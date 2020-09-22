@@ -25,7 +25,7 @@ Pre-packaged  **realsense-simple-lambda.zip** and **realsense-advanced-lambda.zi
 
 * In the **Create function** page:
     * Select **Author from scratch**, 
-    * Enter the **Function Name**, in this case use **gg_realsense_depth**
+    * Enter the **Function Name**, in this case use **gg_realsense_simple_depth** or **gg_realsense_advanced_depth**
     * For **Runtime** select **Python 3.7**
     * If not done for a previous Lambda, you may need to **Create an execution role**
     * Click **Create function:**
@@ -46,7 +46,7 @@ rs_device = RealsenseSimple()
 # rs_device = RealsenseAdvanced()
 ```
 
-#### Updating and Packaging the Lambda Code Examples:
+### Updating and Packaging the Lambda Code Examples:
 If you want to update or change the code and make a new AWS Greengrass Lambda deployment bundle just zip the lambda_functon.py, any dependencies and the greengrasssdk as such:
 ```
 zip -r my-new-gg-lambda-bundle.zip greengrasssdk dependency-dir lambda_function.py
@@ -54,7 +54,7 @@ zip -r my-new-gg-lambda-bundle.zip greengrasssdk dependency-dir lambda_function.
 
 This will create a zip file: **my-new-gg-lambda-bundle.zip** that can be deployed to AWS Lambda following the above procedure.
 
-#### Testing the Lambdas
+### Testing the Lambdas
 A test script **main.py** is provided for simple local tests. 
 To execute:
 ```python3 main.py```
