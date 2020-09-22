@@ -59,7 +59,7 @@ def greengrass_realsense_depth():
 
     try:
         global frame_rate
-        zDepth = rs_simple.get_distance_to_frame_pixel()
+        zDepth = rs_device.get_distance_to_frame_pixel()
         message = 'Distance to image center is: {} meters'.format(zDepth)
         post_log(message, "gg-edge-kit/realsense/depth")
 
