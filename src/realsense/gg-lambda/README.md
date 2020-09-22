@@ -16,7 +16,7 @@ Both classes offer the below functions:
     * In the realsense-advanced class this is performed on a post-processed depth frame
 * **def close_realsense_connection():** Gracefully closes the connection to the RealSense Camera.
 
-#### Package and Deploy the Lambda
+### Package and Deploy the Lambda
 Pre-packaged  **realsense-simple-lambda.zip** and **realsense-advanced-lambda.zip** files are provided and ready to deploy to AWS. 
 
 ### To Deploy the ZIPs to Lambda:
@@ -37,6 +37,12 @@ Pre-packaged  **realsense-simple-lambda.zip** and **realsense-advanced-lambda.zi
 
 **Note:** For more detail on how to package and deploy an AWS GreenGrass Lambda see: 
 [Create and package a Lambda function](https://docs.aws.amazon.com/greengrass/latest/developerguide/create-lambda.html)
+
+### Depth Being Messaged to AWS IoT Core using MQTT
+We will develop a more complete deployment guide in a future release however, if you successfully deployed the Lambda to your Raspberry Pi as an AWS Greengrass service then you should see the following message stream being returned to the AWS IoT Core over MQTT on the topic: **gg-edge-kit-realsense/depth**:
+![RealSense Depth MQTT Stream](pics/mqtt-distance-messages.png)
+
+The above is showing the distance measured in the center of the frame for the RealSense device. You will be able to manipulate the value by holding your hand closer and further away from the RealSense camera.  
 
 ### Simple and Advanced RealSense modes:
 To swap between the simple and advanced RealSense options, just update the below code in **lambda_function.py** to suit:
@@ -73,5 +79,3 @@ REALSENSE-SIMPLE: Distance in frame at x: 440, y:220 is: 3.166
 ^CExiting.....
 2020-09-22 17:23:39,569 - realsense.realsense_simple - [INFO] - Realsense pipeline successfully closed for Intel RealSense D435I - Serial 021222072868
 ```
-
-
