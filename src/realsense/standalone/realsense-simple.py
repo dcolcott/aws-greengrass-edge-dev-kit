@@ -55,36 +55,42 @@ class RealsenseDevice():
                self.pipeline.wait_for_frames()
                log.info('Captured wait frame: {}'.format(x))
 
+            log.info('Starting depth image processing, press Ctl-C to exit.')
             while(True):
-                # Wait for a coherent pair of frames: depth and color
-                self.frames = self.pipeline.wait_for_frames()
+                try:
+                    # Wait for a coherent pair of frames: depth and color
+                    self.frames = self.pipeline.wait_for_frames()
 
-                # Create alignment primitive with color as its target stream:
-                self.align = rs.align(rs.stream.color)
-                self.frames = self.align.process(self.frames)
+                    # Create alignment primitive with color as its target stream:
+                    self.align = rs.align(rs.stream.color)
+                    self.frames = self.align.process(self.frames)
 
-                self.depth_frame = self.frames.get_depth_frame()
-                if not self.depth_frame:
-                    raise Exception('Depth Frame requested but not available')
+                    self.depth_frame = self.frames.get_depth_frame()
+                    if not self.depth_frame:
+                        raise Exception('Depth Frame requested but not available')
 
-                self.color_frame = self.frames.get_color_frame()
-                if not self.color_frame:
-                    raise Exception('Color Frame requested but not available')
+                    self.color_frame = self.frames.get_color_frame()
+                    if not self.color_frame:
+                        raise Exception('Color Frame requested but not available')
 
-                # Convert images to numpy arrays
-                self.depth_image = np.asanyarray(self.depth_frame.get_data())
-                self.color_image = np.asanyarray(self.color_frame.get_data())
+                    # Convert images to numpy arrays
+                    self.depth_image = np.asanyarray(self.depth_frame.get_data())
+                    self.color_image = np.asanyarray(self.color_frame.get_data())
 
-                # Apply colormap on depth image
-                self.depth_colormap = np.asanyarray(rs.colorizer().colorize(self.depth_frame).get_data())
+                    # Apply colormap on depth image
+                    self.depth_colormap = np.asanyarray(rs.colorizer().colorize(self.depth_frame).get_data())
 
-                # Save depth and color image to local file as JPG
-                cv2.imwrite(DEPTH_IMAGE_PATH, self.depth_image)
-                cv2.imwrite(DEPTH_COLORMAP_PATH, self.depth_colormap)
-                cv2.imwrite(COLOR_IMAGE_PATH, self.color_image)
+                    # Save depth and color image to local file as JPG
+                    cv2.imwrite(DEPTH_IMAGE_PATH, self.depth_image)
+                    cv2.imwrite(DEPTH_COLORMAP_PATH, self.depth_colormap)
+                    cv2.imwrite(COLOR_IMAGE_PATH, self.color_image)
 
-                self.get_distance_to_image_center()
-                time.sleep(1.0)
+                    self.get_distance_to_image_center()
+                    time.sleep(1.0)
+
+                except KeyboardInterrupt:
+                    log.info('Exiting.....')
+                    sys.exit()
  
         except Exception as e:
             print(repr(e))
@@ -100,7 +106,7 @@ class RealsenseDevice():
         center_height = int(self.depth_frame.get_height() / 2)
 
         zDepth = self.depth_frame.get_distance(center_width, center_height)
-        print('Distance to image center at {} x {} is: {}'.format(center_width, center_height, zDepth))
+        log.info('Distance to image center at {} x {} is: {}'.format(center_width, center_height, zDepth))
 
 
 if __name__ == "__main__":

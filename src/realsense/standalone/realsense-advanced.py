@@ -86,46 +86,52 @@ class RealsenseDevice():
                self.pipeline.wait_for_frames()
                log.info('Captured wait frame: {}'.format(x))
 
+            log.info('Starting depth image processing, press Ctl-C to exit.')
             while(True):
-                # Wait for a coherent pair of frames: depth and color
-                self.frames = self.pipeline.wait_for_frames()
+                try:
+                    # Wait for a coherent pair of frames: depth and color
+                    self.frames = self.pipeline.wait_for_frames()
 
-                # Create alignment primitive with color as its target stream:
-                self.align = rs.align(rs.stream.color)
-                self.frames = self.align.process(self.frames)
+                    # Create alignment primitive with color as its target stream:
+                    self.align = rs.align(rs.stream.color)
+                    self.frames = self.align.process(self.frames)
 
-                self.depth_frame = self.frames.get_depth_frame()
-                if not self.depth_frame:
-                    raise Exception('Depth Frame requested but not available')
+                    self.depth_frame = self.frames.get_depth_frame()
+                    if not self.depth_frame:
+                        raise Exception('Depth Frame requested but not available')
 
-                self.color_frame = self.frames.get_color_frame()
-                if not self.color_frame:
-                    raise Exception('Color Frame requested but not available')
+                    self.color_frame = self.frames.get_color_frame()
+                    if not self.color_frame:
+                        raise Exception('Color Frame requested but not available')
 
-                # Convert images to numpy arrays
-                self.filtered_depth_frame = self.post_process_depth_frame(self.depth_frame)
+                    # Convert images to numpy arrays
+                    self.filtered_depth_frame = self.post_process_depth_frame(self.depth_frame)
 
-                self.depth_image = np.asanyarray(self.depth_frame.get_data())
-                self.filtered_depth_image = np.asanyarray(self.filtered_depth_frame.get_data())
-                self.color_image = np.asanyarray(self.color_frame.get_data())
+                    self.depth_image = np.asanyarray(self.depth_frame.get_data())
+                    self.filtered_depth_image = np.asanyarray(self.filtered_depth_frame.get_data())
+                    self.color_image = np.asanyarray(self.color_frame.get_data())
 
-                # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-                self.depth_colormap = np.asanyarray(rs.colorizer().colorize(self.depth_frame).get_data())
-                self.processed_depth_colormap = np.asanyarray(rs.colorizer().colorize(self.filtered_depth_frame).get_data())
+                    # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
+                    self.depth_colormap = np.asanyarray(rs.colorizer().colorize(self.depth_frame).get_data())
+                    self.processed_depth_colormap = np.asanyarray(rs.colorizer().colorize(self.filtered_depth_frame).get_data())
 
-                # ComputerVision models expect images to be of the same size as what was trained against.
-                # Below will resze the color, depth and color map images accordingly.
-                self.resize_images(resize_width, resize_height)
+                    # ComputerVision models expect images to be of the same size as what was trained against.
+                    # Below will resze the color, depth and color map images accordingly.
+                    self.resize_images(resize_width, resize_height)
 
-                # Save depth and color image to local file as JPG
-                cv2.imwrite(DEPTH_IMAGE_PATH, self.depth_image)
-                cv2.imwrite(DEPTH_COLORMAP_PATH, self.depth_colormap)
-                cv2.imwrite(PROCESSED_DEPTH_COLORMAP_PATH, self.processed_depth_colormap)
-                cv2.imwrite(COLOR_IMAGE_PATH, self.color_image)
+                    # Save depth and color image to local file as JPG
+                    cv2.imwrite(DEPTH_IMAGE_PATH, self.depth_image)
+                    cv2.imwrite(DEPTH_COLORMAP_PATH, self.depth_colormap)
+                    cv2.imwrite(PROCESSED_DEPTH_COLORMAP_PATH, self.processed_depth_colormap)
+                    cv2.imwrite(COLOR_IMAGE_PATH, self.color_image)
 
-                self.get_distance_to_image_center()
+                    self.get_distance_to_image_center()
 
-                time.sleep(1.0)
+                    time.sleep(1.0)
+
+                except KeyboardInterrupt:
+                    log.info('Exiting.....')
+                    sys.exit()
 
         except Exception as e:
             print(repr(e))
@@ -204,7 +210,7 @@ class RealsenseDevice():
 
         zDepth = self.depth_frame.get_distance(center_width, center_height)
         zDepth = '{:.2f}'.format(zDepth)
-        print('Distance to image center at {} x {} is: {} meters'.format(center_width, center_height, zDepth))
+        log.info('Distance to image center at {} x {} is: {} meters'.format(center_width, center_height, zDepth))
 
 if __name__ == "__main__":
     # Save the image to Pi Desktop to test
