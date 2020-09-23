@@ -30,7 +30,7 @@ cd ../standalone
 
 # Now complete an inference on the provided image: faces01.jpg
 
-python3 object_detect_ssd.py -m ../intel-models/face-detection-adas-0001.xml -d MYRIAD -i faces01.jpeg 
+python3 object_detect_ssd.py -m ../intel-models/face-detection-adas-0001.xml -d MYRIAD -i ../pics/faces01.jpeg 
 ```
 
 This will load the model to the Compute Stick, peform the inference and box bound any identifoed faces and out put to a new file **out.bmp**
