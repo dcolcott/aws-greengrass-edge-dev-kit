@@ -1,10 +1,8 @@
 # AWS Greengrass Edge Development Kit
 
-Universal AWS IoT Greengrass edge development kit with ML Object Detection and Depth Perception. Based on a Raspberry Pi4, provides edge inference of RBG and depth images as well as an array of sensors and actuators. Interfaces include a GPIO controlled 8-port 250v/10A Relay board, I2C temperature, moisture, etc sensors and 8 x native GPIO pins all controlled and managed from the AWS IoT and data platform. 
+Universal AWS IoT Greengrass edge development kit with ML Object Detection and Depth Perception. Based on a Raspberry Pi4, provides edge inference of RBG and depth images as well as an array of sensors and actuators. Interfaces include a GPIO controlled 8-port 250v/10A Relay board, I2C temperature, moisture, etc sensors and 8 x native GPIO pins and servo and DC motor controllers all managed from the AWS IoT and data platform. 
 
 The pièce de résistance however is an Intel RealSense d453i depth perception camera and the Intel Neural Compute Stick 2 providing 3D and depth image ML inference on the edge with hardware accelerated neural processing. These are optional components depending on your budget (the project supports a simple webcam as well) but they go a long way to showing the kind of advanced peripheries and use-cases you can serve on the edge with AWS Greengrass. 
-
-**V1 is a Work in Progress:** This is version 1 and very much in MVP territory. Not all code samples are complete and there isn't a complete deployment guide, etc.. We will continue to iterate on the concept and happy to take comments and requests through the repo's Issues section. 
 
 ### AWS Greengrass Development Kit V1
 ![AWS Greengrass Development Kit V1](pics/v1/dev-kit-front-back.png)
@@ -12,38 +10,47 @@ The pièce de résistance however is an Intel RealSense d453i depth perception c
 #### AWS Greengrass Development Kit V1 - Lid Off
 ![AWS Greengrass Development Kit V1 - Lid Off](pics/v1/dev-kit-lid-off.png)
 
-#### AWS Greengrass Development Kit V1 - Expanded
-![AWS Greengrass Development Kit V1 - Expanded](pics/v1/dev-kit-expanded.png)
+### Getting Started
+If you want to build some or all of this project go to the [Gettring Started](getting-strated) folder to see all the details you need to start building. 
 
 ### Who is this Project For?
 This project is to enable and encourage those with an interest in developing and learning advanced edge compute and computer vision use-cases using AWS IoT and AWS Greengrass.
 
 * **Students:** Would make an awesome university / college engineering project.
-* **Teachers / Lectures:** A great learning aid for classroom prac's and workshops,
-* **Developers:** Step by step guide to building deployment pipelines and code examples for AWS Greengrass.
-    * (TBA application integrating to IoT management)
-* **Enthusiasts:** Looking for the next interesting project in the rapidly growing world of edge compute and IoT.
-* **Home Automation / Security:** Bringing an array of 240v/10A and logic I/O's and computer vision managed from AWS cloud. 
-* **Data Scientists:** To develop and test ML computer vision models on edge devices.
-* **IoT specialists:** Developing professional skills on AWS and advanced IoT Edge Compute.
+* **Teachers / Lectures:** A great learning aid for classroom prac's and workshops.
+* **IoT Specialists:** Developing professional skills on AWS and advanced IoT Edge Compute.
 * **IoT Technology Businesses:** Low cost PoC / quick start to value realisation.
+* **Developers:** Step by step guide to building deployment pipelines and code examples for AWS Greengrass.
+* **Data Scientists:** To develop and test ML computer vision models on edge devices.
+* **Home Automation / Security:** Bringing an array of 240v/10A and logic I/O's and computer vision managed from AWS cloud.
+* **Enthusiasts:** Looking for the next interesting project in the rapidly growing world of edge compute and IoT.
 
-### Code Examples
-Code examples include standalone and AWS Lambda python code for:
-* Capture synchronised RealSense RBG and Depth Image for inference and processing,
-* Capture a USB Webcam image for inference (So depending in budget you don't need the RealSense Camera)
+
+ ### AWS Greengrass Lambdas To:
+* Capture RealSense RBG and Depth Image, preform inference on Compute Stick and report depth to AWS IoT Core for any detected objects,
+* Capture USB WebCam image, preform inference on Compute Stick and report any detected object types and co-ordinates to AWS IoT Core 
 * Perform Image Inference on Mxnet Model on Ras Pi CPU (So depending on budget you don't need the Compute Stick)
-* Perform Image Inference on Intel Neural Compute Stick 2
-* Capture local temperature from a I2C interface,
-* Actuate GPIO Relay Board
+* Capture local temperature from an I2C interface and report to AWS IoT Core,
+* Actuate GPIO Relay Board based on various inputs such as GPIO inpits and computer vision object detection results
 * Generic GPIO I/O.
+
+### Reusable Code Modules:
+Python3 reusable code classes / functions:
+* **realsense-simple/advanced.py:** Interact and take color and depth framnes and calculate depth to a given pixel from the Intel RealSense Camera
+* **usb_uvc_cam.py:** Take a image / frame from a standard USB (UVC support) WebCam.
+* **intel_ncs.py:** Interact and preform computer vision / ML inference of images on the Intel Neural Compute Stick2
+* **goio_relays.py:** Control the state of the 8-port realy board via the GPIO interface
+* **gpio_control.py:** General control and reading of tge Raspberry Pi GPIO pin state. 
+* **i2c_temp.py:** Read in a temperature measurement from a LM75A Temperature Sensor over the I2C Interface.
+* **servo_control.py:** Control the state of a connected servo-motor using PWM I2C interface to servo-control board.
+* **motor_control.py:** Control the sstate and direction of a connected DC motor using GPIO interface to DC motor controller board.
 
 ### Reansense Depth-Colour Maps
 
-One of the use-cases is to take a standard RGB image and use for inference against a Machine Learning Object Detection model then if one of the desired objects is detected, to take a distance measurement to it such as shown in the below depth colour maps:  
+One of the key use-cases is to take a standard RGB image and use for inference against a machine learning object detection model then if one of the desired objects is detected, to take a distance measurement to it such as shown in the below depth colour maps:  
 ![Realsense Colour maps](pics/realsense-colormaps.png)
 
-That's me at my desk writing this guide! The ML model detected a person and then measured a distance of just over 1 meter away.
+That's me at my desk writing this guide! The ML model detected a person and then measured a distance of just under 1 meter away.
 
 ### AWS Greengrass Development Kit V1 - CAD Designs
 
