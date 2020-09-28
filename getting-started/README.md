@@ -7,19 +7,19 @@ This section will focus on the build, configuration and physical components of t
 
 ### Table of Contents:
 
-1) [What is AWS IoT Greengrass](#what-is-gg)
-1) [AWS IoT Training and Support](#iot-training)
-1) [Create / Access an AWS Account](#create-aws-account)
-1) [Raspberry Pi 3/4 Build](#rsp-build)
-1) [Installing AWS IoT Greengrass Core Software](#installing-gg-core)
-1) [Build Requirements: AWS IoT Greengrass Example Functions](#code-examples)
-    a) [GPIO Control](#code-examples-gpio-control)
-    b) [GPIO Controlled Relay Board](#code-examples-gpio-relay)
-    c) [I2C Temperature Sensor](#code-examples-i2c-temp)
-    d) [Web Cam USB Interface](#code-examples-usb-cam)
-    e) [Intel RealSense d435i Depth Camera](#code-examples-realsense)
-    ef) [Intel Neural Compute Stick 2](#code-examples-ncs)
-1) [3D Printed Enclosure](#3d-printing)
+1) [What is AWS IoT Greengrass](#what-is-gg)  
+1) [AWS IoT Training and Support](#iot-training)  
+1) [Create / Access an AWS Account](#create-aws-account)  
+1) [Raspberry Pi 3/4 Build](#rsp-build)  
+1) [Installing AWS IoT Greengrass Core Software](#installing-gg-core)  
+1) [Build Requirements: AWS IoT Greengrass Example Functions](#code-examples)  
+    a) [GPIO Control](#code-examples-gpio-control)  
+    b) [GPIO Controlled Relay Board](#code-examples-gpio-relay)  
+    c) [I2C Temperature Sensor](#code-examples-i2c-temp)  
+    d) [Web Cam USB Interface](#code-examples-usb-cam)  
+    e) [Intel RealSense d435i Depth Camera](#code-examples-realsense)  
+    f) [Intel Neural Compute Stick 2](#code-examples-ncs)  
+1) [3D Printed Enclosure](#3d-printing)  
 
 <a name="code-examples-gpio-relay"></a>
 
