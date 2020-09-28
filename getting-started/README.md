@@ -1,34 +1,38 @@
 # AWS Greengrass Edge Development Kit
 
 ### Getting Started
-This is the getting started build guide for the AWS Greengrass IoT Edge Development Kit. Here you will see all the steps needed to get to a minimal AWS Greengrass IoT Edge prototype running with just a Raspberry Pi and an AWS account. Depending on your interest you can then pick and choose any or all additional components from the I2C temperature sensor and GPIO controlled relay board, the servo and DC-Motor controllers right through to a edge computer vision and depth perception application using a standard web cam or the RealSense series of 3D depth cameras depending on your budget and application. Finally, if you want to wrap it all up in a neat and presentable package you can choose to 3D print the custom enclosure we provide with the project.
+This is the getting started build guide for the AWS Greengrass IoT Edge Development Kit. Here you will see all the steps needed to get to a minimal AWS Greengrass IoT Edge prototype running with just a Raspberry Pi and an AWS account. Depending on your interest you can then pick and choose any or all additional components from the I2C temperature sensor and GPIO controlled relay board, the servo and DC-Motor controllers right through to an edge computer vision and depth perception application using a standard web cam or the RealSense series of 3D depth cameras depending on your budget and application. Finally, if you want to wrap it all up in a neat and presentable package you can choose to 3D print the custom enclosure we provide with the project.
 
 This section will focus on the build, configuration and physical components of the project. For a detailed deployment guide for each of the individual components go to the respective deployment sections. 
 
 ### Table of Contents:
 
-1) [What is AWS IoT Greengrass](#What is AWS IoT Greengrass)
-1) [AWS IoT Training and Support](#AWS IoT Training and Support)
-1) [Create / Access an AWS Account](#Create / Access an AWS Account)
-1) [Build Raspberry Pi 3/4](#Build Raspberry Pi)
-1) [Installing AWS IoT Greengrass Core Software](#Installing AWS IoT Greengrass Core Software)
-1) [Build Requirements: AWS IoT Greengrass Example Functions](#AWS IoT Greengrass Example Functions)
-    a) [GPIO Control](#GPIO Control)
-    b) [GPIO Controlled Relay Board](#GPIO Controlled Relay Board)
-    c) [Web Cam USB Interface](#Web Cam USB Interface)
-    d) [Intel RealSense d435i Depth Camera](#Intel RealSense d435i Depth Camera)
-    e) [ Intel Neural Compute Stick 2](#Intel Neural Compute Stick 2)
-1) [3D Printed Enclosure](#3D Printed Enclosure)
+1) [What is AWS IoT Greengrass](#what-is-gg)
+1) [AWS IoT Training and Support](#iot-training)
+1) [Create / Access an AWS Account](#create-aws-account)
+1) [Raspberry Pi 3/4 Build](#rsp-build)
+1) [Installing AWS IoT Greengrass Core Software](#installing-gg-core)
+1) [Build Requirements: AWS IoT Greengrass Example Functions](#code-examples)
+    a) [GPIO Control](#code-examples-gpio-control)
+    b) [GPIO Controlled Relay Board](#code-examples-gpio-relay)
+    c) [I2C Temperature Sensor](#code-examples-i2c-temp)
+    d) [Web Cam USB Interface](#code-examples-usb-cam)
+    e) [Intel RealSense d435i Depth Camera](#code-examples-realsense)
+    ef) [Intel Neural Compute Stick 2](#code-examples-ncs)
+1) [3D Printed Enclosure](#3d-printing)
 
+<a name="code-examples-gpio-relay"></a>
+
+<a name="what-is-gg"></a>
 ### What is AWS IoT Greengrass
 Before we kick off it's a good time to provide a quick explanation of what exactly AWS IoT Greengrass is and what it does. 
 
 **So, What is AWS IoT Greengrass:**
 AWS IoT Greengrass lets you build IoT solutions that connect different types of devices with the cloud and each other. Devices that run Linux, including distributions such as Ubuntu and Raspbian, and support Arm or x86 architectures can host the AWS IoT Greengrass Core software. The AWS IoT Greengrass Core software enables the local execution of AWS Lambda code, messaging, data management, and security. Devices running AWS IoT Greengrass Core act as a hub that can communicate with other devices that are running FreeRTOS or have the AWS IoT Device SDK installed. These devices could vary in size, from smaller microcontroller-based devices to large appliances. 
 
-![Greengrass Intro](pics/greengrass-intro.png)
+![Greengrass Intro](pics/greengrass-intro.png?height=250px)
 
-**For more detail see:** 
+**For more detail see:**   
 [AWS IoT Greengrass](https://aws.amazon.com/greengrass/)  
 [What is AWS IoT Greengrass](https://docs.aws.amazon.com/greengrass/latest/developerguide/what-is-gg.html)
 
@@ -37,25 +41,29 @@ In this project we are going to use our Raspberry Pi as the AWS IoT Greengrass c
 
 We will use AWS IoT Greengrass to deploy AWS Lambdas which provide a container to run our code in to the Raspberry Pi. This code will control the edge compute use cases and trigger actions such as control the relay board or take an image and perform machine learning object detection. 
 
+<a name="iot-training"></a>
 ### AWS IoT Training and Support
-If you're new to AWS or AWS IoT and want to deep dive on the functionality the below links offer a number of free training resources and introductory user guides
+If you're new to AWS or AWS IoT and want to deep dive on the functionality the below links offer a number of free training resources and introductory user guides:
 
 * [AWS IoT Home](https://aws.amazon.com/iot/)
 * [AWS Internet of Things Foundation Series](https://www.aws.training/Details/Curriculum?id=27289)
 * [AWS IoT Whitepapers and Technical Guides](https://aws.amazon.com/whitepapers/?whitepapers-main.sort-by=item.additionalFields.sortDate&whitepapers-main.sort-order=desc&whitepapers-main.q=iot&whitepapers-main.q_operator=AND#iot)
 * [IoT Atlas](https://iotatlas.io/)
 
+<a name="create-aws-account"></a>
 ### Create / Access an AWS Account
 The first step is to make sure you have access to an AWS account and have a valid IAM user.  
 
 * **Access or create an AWS Account:** If you don't already have access to an AWS account and IAM User, you can create by following this guide: [Create an AWS Account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)  
 
-### Build Raspberry Pi3/4  
+<a name="rsp-build"></a>
+### Raspberry Pi3/4 Build
 
 For this purpose it is assumed you have a Raspberry Pi 3/4 that is loaded with the latest 32-bit Raspberry Pi OS (previously called Raspbian). This can be found here: [Raspberry Pi OS](https://www.raspberrypi.org/downloads/raspberry-pi-os/).
 
 **Note:** If intending to add the RealSense camera, Intel Compute Stick or perform any image inference on the Raspberry Pi CPU directly we highly recommend a Pi4 with at least 4G memory over a Pi3.
 
+<a name="installing-gg-core"></a>
 ### Installing AWS IoT Greengrass Core Software
 
 * Configuring a Raspberry Pi for AWS Greengrass:
@@ -64,17 +72,19 @@ For a detailed guide on configuring a Raspberry Pi as an AWS IoT Greengrass core
 Stop before you get to the section on installing the AWS Greengrass Core software and follow the below.
 
 * Installing AWS Greengrass Core Software
-When it comes to installing the AWS Greengrass core Software we recommend using this [Quick Start Greengrass Device Setup](https://docs.aws.amazon.com/greengrass/latest/developerguide/quick-start.html).
+When it comes to installing the AWS Greengrass core Software we recommend using this guide: [Quick Start Greengrass Device Setup](https://docs.aws.amazon.com/greengrass/latest/developerguide/quick-start.html).
 
-Say yes to publishing the 'Hello World' example so you can more easily test the service and learn the AWS IoT Greengrass console. 
+Say **yes to publishing the 'Hello World'** example so you can more easily test the service and learn the AWS IoT Greengrass console. 
 
 Once complete verify you are receiving 'HelloWorld' MQTT messages from your Raspberry pi in the AWS IoT Console by following this guide: [Verify the Lambda function is running on the core device](https://docs.aws.amazon.com/greengrass/latest/developerguide/lambda-check.html)
 
-[AWS IoT Greengrass Hello World](pics/greengrass-intro.png)
+[AWS IoT Greengrass Hello World](pics/greengrass-hello-world.png?height=250px)
 
 At this stage its assumed you have a configured Raspberry Pi with AWS IoT Greengrass with the Hello World service deployed and have been able to log into the AWS IoT console and see the MQTT messages arriving on the *'hello/world'* topic.
 
+<a name="code-examples"></a>
 ### AWS IoT Greengrass Example Functions:
+<a name="code-examples-gpio-control"></a>
 ### GPIO Control
 
 The first of the provided AWS IoT Greengrass functions you can deploy is the GPIO Control example given in: TBA GPIO Deployment
@@ -90,32 +100,38 @@ The GPIO controlled relay board builds on the previous example to include a 250v
 
 An example of relay board used is available for less than $10 here: [GPIO Relay Board](https://www.ebay.com.au/itm/1PCS-8-Channels-Relay-Board-Module-for-Arduino-Raspberry-Pi-ARM-AVR-DSP-PIC/182491477413?hash=item2a7d56f5a5:g:H20AAOSwQaJXRwdv)
 
-![GPIO 8 Port Relay Board](pics/greengrass-gpio-relay.png)
+<a name="code-examples-gpio-relay"></a>
+![GPIO 8 Port Relay Board](pics/greengrass-gpio-relay.png?height=250px)
 
 This model of relay board is very common and so you should be able to find one of similar design in your region. Any GPIO controlled relay board is acceptable however, the 3D printed enclosure is designed around this model so if you intend to build the enclosure as well then look for this or an equivalent model. 
 
-![GPIO 8 Port Relay Board](pics/greengrass-gpio-relay.png)
-
 Once you have the GPIO Relay board then go to the GPIO Relay board deployment guide at: **TBA**
 
+<a name="code-examples-i2c-temp"></a>
 ### I2C Temperature Sensor
 
 The I2C temperature sensor is based on any I2C LM75A Temperature Sensor development board. 
 You can find an example here: [LM75A Temperature Sensor I2C](https://www.ebay.com.au/itm/LM75A-Temperature-Sensor-I2C-High-Speed-Interface-Development-Board-2-8V-5-5V/362754212574?hash=item5475d602de:g:7RQAAOSwBWde~~yI&frcectupt=true)
 
-[I2C LM75A Temp Sensor](pics/greengrass-i2c-temp.png)
+![I2C LM75A Temp Sensor](pics/greengrass-i2c-temp.png)
 
 **Note:** Just be aware that some of these LM75A development boards (usually the less expensive ones) don't come with the headers pins soldered in place. If you don't have a soldering iron or don't want to deal with soldering header pins just check this before you purchase. 
 
 Once you have the LM75A temperature development board then go to the I2C Temperature sensor guide at: **TBA**
 
-### Web Cam USB Interface
-**TBA**
+<a name="code-examples-usb-cam"></a>
+### Web Cam USB Interface:
+TBA
 
-### Intel RealSense d435i Depth Camera
+<a name="code-examples-realsense"></a>
+### Intel RealSense d435i Depth Camera:
+TBA
 
-### Intel Neural Compute Stick 2
+<a name="code-examples-ncs"></a>
+### Intel Neural Compute Stick 2:
+TBA
 
-### 3D Printed Enclosure
+<a name="3d-printing"></a>
+### 3D Printed Enclosure:
 
 See the section [3D Printed Components](../3d-printing-stl)

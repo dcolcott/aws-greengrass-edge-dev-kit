@@ -4,6 +4,8 @@ Universal AWS IoT Greengrass edge development kit with ML Object Detection and D
 
 The pièce de résistance however is an Intel RealSense d453i depth perception camera and the Intel Neural Compute Stick 2 providing 3D and depth image ML inference on the edge with hardware accelerated neural processing. These are optional components depending on your budget (the project supports a simple webcam as well) but they go a long way to showing the kind of advanced peripheries and use-cases you can serve on the edge with AWS Greengrass. 
 
+**Note:** This project is very much under development. Not all code examples are completed. I will be updating regularly until complete.
+
 ### AWS Greengrass Development Kit V1
 ![AWS Greengrass Development Kit V1](pics/v1/dev-kit-front-back.png)
 
@@ -11,7 +13,7 @@ The pièce de résistance however is an Intel RealSense d453i depth perception c
 ![AWS Greengrass Development Kit V1 - Lid Off](pics/v1/dev-kit-lid-off.png)
 
 ### Getting Started
-If you want to build some or all of this project go to the [Gettring Started](getting-strated) folder to see all the details you need to start building. 
+If you want to build some or all of this project go to the [Getting Started](getting-started) folder to see all the details you need to start building. 
 
 ### Who is this Project For?
 This project is to enable and encourage those with an interest in developing and learning advanced edge compute and computer vision use-cases using AWS IoT and AWS Greengrass.
@@ -25,27 +27,26 @@ This project is to enable and encourage those with an interest in developing and
 * **Home Automation / Security:** Bringing an array of 240v/10A and logic I/O's and computer vision managed from AWS cloud.
 * **Enthusiasts:** Looking for the next interesting project in the rapidly growing world of edge compute and IoT.
 
-
  ### AWS Greengrass Lambdas To:
 * Capture RealSense RBG and Depth Image, preform inference on Compute Stick and report depth to AWS IoT Core for any detected objects,
 * Capture USB WebCam image, preform inference on Compute Stick and report any detected object types and co-ordinates to AWS IoT Core 
 * Perform Image Inference on Mxnet Model on Ras Pi CPU (So depending on budget you don't need the Compute Stick)
 * Capture local temperature from an I2C interface and report to AWS IoT Core,
-* Actuate GPIO Relay Board based on various inputs such as GPIO inpits and computer vision object detection results
+* Actuate GPIO Relay Board based on various inputs such as GPIO inputs and computer vision object detection results
 * Generic GPIO I/O.
 
 ### Reusable Code Modules:
 Python3 reusable code classes / functions:
-* **realsense-simple/advanced.py:** Interact and take color and depth framnes and calculate depth to a given pixel from the Intel RealSense Camera
+* **realsense-simple/advanced.py:** Interact and take color and depth frames and calculate depth to a given pixel from the Intel RealSense Camera
 * **usb_uvc_cam.py:** Take a image / frame from a standard USB (UVC support) WebCam.
 * **intel_ncs.py:** Interact and preform computer vision / ML inference of images on the Intel Neural Compute Stick2
-* **goio_relays.py:** Control the state of the 8-port realy board via the GPIO interface
-* **gpio_control.py:** General control and reading of tge Raspberry Pi GPIO pin state. 
+* **goio_relays.py:** Control the state of the 8-port relay board via the GPIO interface
+* **gpio_control.py:** General control and reading of the Raspberry Pi GPIO pin state. 
 * **i2c_temp.py:** Read in a temperature measurement from a LM75A Temperature Sensor over the I2C Interface.
 * **servo_control.py:** Control the state of a connected servo-motor using PWM I2C interface to servo-control board.
-* **motor_control.py:** Control the sstate and direction of a connected DC motor using GPIO interface to DC motor controller board.
+* **motor_control.py:** Control the state and direction of a connected DC motor using GPIO interface to DC motor controller board.
 
-### Reansense Depth-Colour Maps
+### ReanSense Depth-Colour Maps
 
 One of the key use-cases is to take a standard RGB image and use for inference against a machine learning object detection model then if one of the desired objects is detected, to take a distance measurement to it such as shown in the below depth colour maps:  
 ![Realsense Colour maps](pics/realsense-colormaps.png)
@@ -67,5 +68,3 @@ That's me at my desk writing this guide! The ML model detected a person and then
 * **Robotics:** Collision avoidance, Drive to Object.
 * **Robot Arm:** Detect and capture object. (Depth camera is detachable, can be mounted on robot arm extension). 
 * **General Development:** Enablement, training and education on AWS Greengrass edge device capability.
-
-
