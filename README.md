@@ -35,17 +35,6 @@ This project is to enable and encourage those with an interest in developing and
 * Actuate GPIO Relay Board based on various inputs such as GPIO inputs and computer vision object detection results
 * Generic GPIO I/O.
 
-### Reusable Code Modules:
-Python3 reusable code classes / functions:
-* **realsense-simple/advanced.py:** Interact and take color and depth frames and calculate depth to a given pixel from the Intel RealSense Camera
-* **usb_uvc_cam.py:** Take a image / frame from a standard USB (UVC support) WebCam.
-* **intel_ncs.py:** Interact and preform computer vision / ML inference of images on the Intel Neural Compute Stick2
-* **goio_relays.py:** Control the state of the 8-port relay board via the GPIO interface
-* **gpio_control.py:** General control and reading of the Raspberry Pi GPIO pin state. 
-* **i2c_temp.py:** Read in a temperature measurement from a LM75A Temperature Sensor over the I2C Interface.
-* **servo_control.py:** Control the state of a connected servo-motor using PWM I2C interface to servo-control board.
-* **motor_control.py:** Control the state and direction of a connected DC motor using GPIO interface to DC motor controller board.
-
 ### ReanSense Depth-Colour Maps
 
 One of the key use-cases is to take a standard RGB image and use for inference against a machine learning object detection model then if one of the desired objects is detected, to take a distance measurement to it such as shown in the below depth colour maps:  
