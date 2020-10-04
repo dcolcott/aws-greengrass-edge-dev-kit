@@ -1,20 +1,22 @@
 #
 # lambda_gpio_control.py
 # On-Demand Greengrass lambda to trigger GPIO Pins 8 - 15 on a Raspberry Pi.
-# Is assumed these pins corrolate to relays 1 - 8 on the GPOIO relay board.
+# Is assumed these pins correlate to relays 1 - 8 on the GPOIO relay board.
 # see pin_map below for moe detail.
 # 
-# Greengrass Contaier Parameters:
-# Note: Must run as root to access sysbus succesfully, see below link for required config settings
+# Note: Must run as root to access GPIO recourses successfully, see below link for required config settings
 # https://docs.aws.amazon.com/greengrass/latest/developerguide/lambda-group-config.html#lambda-running-as-root
-# TODO: Will be able to sue AWS Greengrass RasPi GPIO connector instead of running as root ID
+#
+# TODO: Will be able to use AWS Greengrass RasPi GPIO connector instead of running as root ID
+#
+# Greengrass Container Parameters:
 # Another user ID/group ID: 0
 # Containerization: No Container (Always)
 # Lambda lifecycle: On-demand function
 # All else to default
 #
-# Will initilise the GPIOs and set all relays to closed when first depolyed, beware of this 
-# if you have anything of importants running on the relays. Once deployed, you need to trigger 
+# Will initialise the GPIOs and set all relays to closed when first deployed, beware of this 
+# if you have anything of important running on the relays. Once deployed, you need to trigger 
 # the lambda with settings as describes below to set the relays open of closed.
 #
 #
@@ -25,10 +27,10 @@ import RPi.GPIO as GPIO
 from threading import Timer
 import greengrasssdk
 
-#GPIO Pin Map - set as per your own physical connectivity if not usinebg GPIO Pins 8 - 15.
+#GPIO Pin Map - set as per your own physical connectivity if not using GPIO Pins 8 - 15.
 # Maps GPIO Relay board relay number to connected Ras Pi GPIO Pins
 # In this case relays 1 to 8 map sequentially to Ras Pi GPIO pins starting at 8 to 15
-# GPIO pins 0 - 7 have other special purpouses so we try and reserve them if possible.
+# GPIO pins 0 - 7 have other special purposes so we try and reserve them if possible.
 
 pin_map = {1:8, 2:9, 3:10, 4:11, 5:12, 6:13, 7:14, 8:15}
 
@@ -62,18 +64,18 @@ client = greengrasssdk.client("iot-data")
 post_log("Initilising gg-gpio-relay-control  on device: TBA", log.info, "gg-edge-kit/gpio-relay/init")
 
 # Assumed that the GPIO relay board is connected on GPIO pins 8 - 15
-# Initilise GPIO 8 - 15 as output ppins and tie thenm low to start 
+# Initialise GPIO 8 - 15 as output pins and tie them low to start 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # If using other pins for GPIO Relay board then set according below.
-# Is asumed in this case that GPIO pins 8 - 15 corrolte to relays 1 - 8 
+# Is assumed in this case that GPIO pins 8 - 15 correlate to relays 1 - 8 
 
 for pin in pin_map:
     GPIO.setup(pin_map[pin], GPIO.OUT)
     GPIO.output(pin_map[pin], False)
 
-post_log("Initilising COMPLETE gg-gpio-relay-control  on device: TBA", log.info, "gg-edge-kit/gpio-relay/init")
+post_log("Initialising COMPLETE gg-gpio-relay-control  on device: TBA", log.info, "gg-edge-kit/gpio-relay/init")
 
 ####################################
 ## Functions
@@ -82,12 +84,12 @@ def greengrass_set_gpio_relay(relay_settings):
     """
     Expects a dict with:
         a) Key: representing the relay number 1 - 8.
-        b) Value: 0 or 1 representing setting the relay open and closed respectivly
+        b) Value: 0 or 1 representing setting the relay open and closed respectively
         i.e: {'1':'1', '3':'0', '6':'0', '8':'1'}
         
         Would set relay 1, 3, 6 & 8 to the respective Open/Closed values
 
-    Note: As passing in via MQTT it is assumed all keys and boolean values are 
+    Note: As passing in via MQTT it is assumed all keys and 0/1 values are 
     passed in as strings, will error if not.
     """
     try:
@@ -103,18 +105,18 @@ def greengrass_set_gpio_relay(relay_settings):
     except Exception as e:
         post_log(repr(e), log.error, "gg-edge-kit/gpio-relay/error")
 
-# This will be triggered fomr MQTT and expects a dict in event called relay_settings 
+# This will be triggered from MQTT and expects a dict in event called relay_settings 
 def lambda_handler(event, context):
     """
-    This method will be triggered from an on-demand Lamdbda function in AWS IoT Greengrass
+    This method will be triggered from an on-demand Lambda function in AWS IoT Greengrass
     It expects a string representation of a python dict called 'relay_settings' to be provided in the event with:
         a) Key: representing the relay number 1 - 8.
-        b) Value: 0 or 1 representing setting the relay open and closed respectivly
+        b) Value: 0 or 1 representing setting the relay open and closed respectively
         i.e: {'1':'1', '3':'0', '6':'0', '8':'1'}
         
         Would set relay 1, 3, 6 & 8 to the respective Open/Closed values
         
-        Note: Must be in String quotes to stearalize with JSON.dumps or Lambda will throw an exception
+        Note: Must be in String quotes to sterilize with JSON.dumps or Lambda will throw an exception
         If testing from IoT Core MQQT publish below is an example of a valid message for AWS IoT Core MQTT publish
         { 
             "relay_settings": "{'1':'1', '5':'0'}" 
