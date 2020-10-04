@@ -7,10 +7,10 @@ The pièce de résistance however is an Intel RealSense d453i depth perception c
 **Note:** This project is very much under development. Not all code examples are completed. I will be updating regularly until complete.
 
 ### AWS Greengrass Development Kit V1
-![AWS Greengrass Development Kit V1](pics/v1/dev-kit-front-back.png)
+![AWS Greengrass Development Kit V1](pics/dev-kit-front-back.png)
 
 #### AWS Greengrass Development Kit V1 - Lid Off
-![AWS Greengrass Development Kit V1 - Lid Off](pics/v1/dev-kit-lid-off.png)
+![AWS Greengrass Development Kit V1 - Lid Off](pics/dev-kit-lid-off.png)
 
 ### Getting Started
 If you want to build some or all of this project go to the [Getting Started](getting-started) folder to see all the details you need to start building. 
@@ -57,9 +57,9 @@ That's me at my desk writing this guide! The ML model detected a person and then
 
 3D printed enclosure and internal standoffs (3D print STL files) included:
 
-![AWS Greengrass Development Kit V1 - CAD Front - Back](pics/v1/dev-kit-cad-front-back.png)
+![AWS Greengrass Development Kit V1 - CAD Front - Back](pics/dev-kit-cad-front-back.png)
 
-![AWS Greengrass Development Kit V1 - CAD Lid Off](pics/v1/dev-kit-cad-lid-off.png)
+![AWS Greengrass Development Kit V1 - CAD Lid Off](pics/dev-kit-cad-lid-off.png)
 
 ### Example Use Cases for Computer Vision / Depth on Edge Compute with I/O Actuators
 
