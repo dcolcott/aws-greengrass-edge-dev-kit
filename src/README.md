@@ -12,7 +12,8 @@ This section provides python3 code examples for both standalone and AWS IoT Gree
 1) **workflow-tests:** Directory containing standalone python code to peform various workflows for local development:
     a) **workflow-cv-depth-symple.py:** Computer Vision / Depth Measurement workflow using the Neural Compute stick to peform object-detection and the RealSense camera to report the distance to the detected object.
     a) **workflow-cv-depth-advanced.py:** Computer Vision / Depth Measurement workflow using the Neural Compute stick to peform object-detection and the RealSense camera to report the distance to the detected object. Uses the preset advanced configurations for the RealSense camera and provides depth frame post-processing and filtering.
-1) **lambda_cv_depth.py:** AWS IoT Greengrass lambda main method for Intel realsense d4xx camera and INtel Compute stick HW accellerated object detection inference. 
+1) **lambda_cv_depth.py:** AWS IoT Greengrass lambda main method for Intel realsense d4xx camera and Intel Compute stick HW accellerated object detection inference. 
+
 
 ### Packaging and Deploying a Lambda
 
