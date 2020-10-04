@@ -101,7 +101,7 @@ The GPIO controlled relay board builds on the previous example to include a 250v
 An example of relay board used is available for less than $10 here: [GPIO Relay Board](https://www.ebay.com.au/itm/1PCS-8-Channels-Relay-Board-Module-for-Arduino-Raspberry-Pi-ARM-AVR-DSP-PIC/182491477413?hash=item2a7d56f5a5:g:H20AAOSwQaJXRwdv)
 
 <a name="code-examples-gpio-relay"></a>
-![GPIO 8 Port Relay Board](pics/greengrass-gpio-relay.png?height=250px)
+![GPIO 8 Port Relay Board](pics/greengrass-gpio-relay.png?height=150px)
 
 This model of relay board is very common and so you should be able to find one of similar design in your region. Any GPIO controlled relay board is acceptable however, the 3D printed enclosure is designed around this model so if you intend to build the enclosure as well then look for this or an equivalent model. 
 
@@ -113,7 +113,7 @@ Once you have the GPIO Relay board then go to the GPIO Relay board deployment gu
 The I2C temperature sensor is based on any I2C LM75A Temperature Sensor development board. 
 You can find an example here: [LM75A Temperature Sensor I2C](https://www.ebay.com.au/itm/LM75A-Temperature-Sensor-I2C-High-Speed-Interface-Development-Board-2-8V-5-5V/362754212574?hash=item5475d602de:g:7RQAAOSwBWde~~yI&frcectupt=true)
 
-![I2C LM75A Temp Sensor](pics/greengrass-i2c-temp.png)
+![I2C LM75A Temp Sensor](pics/greengrass-i2c-temp.png?height=100px)
 
 **Note:** Just be aware that some of these LM75A development boards (usually the less expensive ones) don't come with the headers pins soldered in place. If you don't have a soldering iron or don't want to deal with soldering header pins just check this before you purchase. 
 
