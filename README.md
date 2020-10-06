@@ -12,6 +12,9 @@ The pièce de résistance however is an Intel RealSense d453i depth perception c
 #### AWS Greengrass Development Kit V1 - Lid Off
 ![AWS Greengrass Development Kit V1 - Lid Off](pics/dev-kit-lid-off.png)
 
+#### AWS Greengrass Development Kit V1 - Internal Wiring and Temp Sensor
+![AWS Greengrass Development Kit V1 - Internal Wiring and Temp Sensor](pics/dev-kit-wired-up.png)
+
 ### Getting Started
 If you want to build some or all of this project go to the [Getting Started](getting-started) folder to see all the details you need to start building. 
 
