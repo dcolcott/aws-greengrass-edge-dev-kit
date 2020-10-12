@@ -125,11 +125,19 @@ TBA
 
 <a name="code-examples-realsense"></a>
 ### Intel RealSense d435i Depth Camera:
-TBA
+
+The Intel RealSense series of cameras offer programatic access over USB3.0 to an RBG and stereo IR depth perception cameras and can be used in object detection and depth perception edge application. The camera is highly programable, light weight, has comparably low power consumption and is able to be powered from the USB interface making it well suited to edge computer vision applications.
+
+![Intel Realsense Camera](pics/intel-realsense.png)
+
+You can order the Intel Realsense andf Neural Compute Stick from: [Intel RealSense](https://www.intelrealsense.com/depth-camera-and-ncs2/)
+
 
 <a name="code-examples-ncs"></a>
 ### Intel Neural Compute Stick 2:
-TBA
+The Intel® NCS2 is built on the Intel® Movidius™ Myriad™ X VPU featuring 16 programmable shave cores and a dedicated neural compute engine for hardware acceleration of deep neural network inferences.
+
+![Intel NCS](pics/intel-ncs.png)
 
 <a name="3d-printing"></a>
 ### 3D Printed Enclosure:
