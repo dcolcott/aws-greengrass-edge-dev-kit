@@ -27,7 +27,7 @@ logging.basicConfig(format="%(asctime)s - %(name)s - [%(levelname)s] - %(message
 
 class IntelNcs():
     """
-    Interact with the Intel Neural Compute Stick2 to peform single image inference
+    Interact with the Intel Neural Compute Stick2 to perform single image inference
     """
 
     def __init__(self, model, weights):
@@ -116,7 +116,7 @@ class IntelNcs():
         self.exec_net = ie.load_network(network=net, device_name=DEVICE)
 
 
-    def peform_inference(self, rbg, confidence_threashold):
+    def perform_inference(self, rbg, confidence_threashold):
         # --------------------------- 6. Perform Inference ---------------------------------------------
         
         # Get the inference image details
@@ -173,6 +173,5 @@ class IntelNcs():
                     classes[imid] = []
 
                 classes[imid].append(label)
-
 
         return(boxes)
