@@ -19,18 +19,36 @@
 #  Note: Uses the RealSense Advanced class that applies one of a library of a pre-set configurations with various 
 #  objectives to optimise density, accuracy, range and resolution and also offers post-processing of the depth frame before a depth calculation is made
 #
+# Greengrass Container Parameters:
+# Another user ID/group ID: 0
+# Containerization: No Container (Always) / Timeout: 30
+# Lambda lifecycle: Make this function long-lived and keep it running indefinitely
+# All else to default
+#
+# In the GreenGrass Lambda, must set the below env-vars. These are needed for Realsense CAmera and Neural Compute Stick:
+# Note: These are for this partcuyklar install on a RAsPi4. May need to change some values accordingly. 
+# InferenceEngine_DIR = /opt/intel/openvino/deployment_tools/inference_engine/share
+# INTEL_OPENVINO_DIR = /opt/intel/openvino
+# KMB_INSTALL_DIR = /opt/intel/openvino/deployment_tools/inference_engine/external/hddl_unite
+# OpenCV_DIR =  /opt/intel/openvino/opencv/cmake
+# PYTHONPATH = /usr/lib/python3/dist-packages/pyrealsense2:/opt/intel/openvino/python/python3.7:/opt/intel/openvino/python/python3:/opt/intel/openvino/deployment_tools/model_optimizer:
+# LD_LIBRARY_PATH = /opt/intel/openvino/opencv/lib:/opt/intel/openvino/deployment_tools/ngraph/lib:/opt/intel/openvino/deployment_tools/inference_engine/external/hddl_unite/lib:/opt/intel/openvino/deployment_tools/inference_engine/external/hddl/lib:/opt/intel/openvino/deployment_tools/inference_engine/external/gna/lib:/opt/intel/openvino/deployment_tools/inference_engine/external/mkltiny_lnx/lib:/opt/intel/openvino/deployment_tools/inference_engine/external/tbb/lib:/opt/intel/openvino/deployment_tools/inference_engine/lib/armv7l:
+# ngraph_DIR = /opt/intel/openvino/deployment_tools/ngraph/cmake
+# PATH = /opt/intel/openvino/deployment_tools/model_optimizer:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+# HDDL_INSTALL_DIR = /opt/intel/openvino/deployment_tools/inference_engine/external/hddl
+# INTEL_CVSDK_DIR = /opt/intel/openvino
 #
 # Author: Dean Colcott - https://www.linkedin.com/in/deancolcott/
 #
 
 import re
-import subprocess
-
 import sys
 import cv2
 import os
+import time
 import logging
 import traceback
+import subprocess
 import greengrasssdk
 from threading import Timer
 from neural_compute.intel_ncs import IntelNcs as Ncs
@@ -55,7 +73,7 @@ ML_MODEL_NAME = 'face-detection-adas-0001'
 # If running lambda as non-containerised GreenGrass then prefix any resource paths with AWS_GG_RESOURCE_PREFIX
 # ML_MODEL_BASE_PATH = "{}{}".format(os.getenv("AWS_GG_RESOURCE_PREFIX"), "/ml/od/")
 
-# Just for development, manually added the Intel model files (.bin and .xml) to Greengrass Core (RasPi in this case) to /home/pi/compute-stick-build/
+# Just for development, manually add the Intel model files (.bin and .xml) to Greengrass Core (RasPi in this case) to /home/pi/compute-stick-build/
 ML_MODEL_BASE_PATH = '/home/pi/Documents/compute-stick-build/'
 
 # Interval (in seconds) to publish received framerate to MQTT
@@ -119,7 +137,7 @@ def depth_measure_workflow():
         ncs = Ncs(model, weights)
         post_log('Successfully Initialized Neural Compute Stick', 'edge-dev-kit/edge-cv/depth/ncs')
         
-        # Loop sleep delay (if used)
+        # Image procesisng sleep delay (Secs). Make sure is at least 0.05
         sleep_iteration = 2
         
         confidence_threshold = CONFIDENCE_THRESHOLD
@@ -164,9 +182,8 @@ def depth_measure_workflow():
                 save_box_bound_Image(depth_colormap, "colormap.bmp", boxes[0], "Person: {} meters".format(zDepth))
                 save_box_bound_Image(filtered_colormap, "filtered_colormap.bmp", boxes[0], "Person: {} meters".format(zDepth))
 
-            # Uncomment below to add a sleep dely between taking frames if desired
-            #print('Sleeping for: {} seconds\n\n'.format(sleep_iteration))
-            #time.sleep(sleep_iteration)
+            # Add a sleep dely between taking frames, can make the device unreachable if no delay at all. 
+            time.sleep(sleep_iteration)
 
     except Exception as e:
         post_log(traceback.format_exc(), 'edge-dev-kit/edge-cv/depth/error')

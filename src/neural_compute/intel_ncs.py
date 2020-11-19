@@ -164,7 +164,7 @@ class IntelNcs():
                 xmax = np.int(iw * proposal[5])
                 ymax = np.int(ih * proposal[6])
                 log.debug("[{},{}] element, prob = {:.6}    ({},{})-({},{}) batch id : {}" \
-                    .format(number, label, confidence, xmin, ymin, xmax, ymax, imid), end="")
+                    .format(number, label, confidence, xmin, ymin, xmax, ymax, imid))
 
                 if not imid in boxes.keys():
                     boxes[imid] = []

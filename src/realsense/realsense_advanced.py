@@ -1,6 +1,6 @@
 # realsense-advanced.py
 #
-# Class to interact with the RealSense camera using mostly simple defaults and no image post processing
+# Class to interact with the RealSense camera using advanced settings files and image post processing
 # Can capture a frame and return as a Realsense frame object and provides distance to a 
 # given X,Y pixel value in the frame.  
 #
