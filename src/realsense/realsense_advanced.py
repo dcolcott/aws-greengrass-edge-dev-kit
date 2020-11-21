@@ -101,6 +101,68 @@ class RealsenseDevice():
 
         return np_arrays
 
+    def get_post_process_depth_frame(self, depth_frame=None, decimation_magnitude=2.0, spatial_magnitude=2.0, spatial_smooth_alpha=0.5,
+                                spatial_smooth_delta=20, temporal_smooth_alpha=0.4, temporal_smooth_delta=20):
+        """
+        Apply a post-processing to the the depth_frame and return the filtered result.
+        If depth_frame not provided, the next avilable depth_frame will be taken from RealSense device.
+
+        Parameters:
+        -----------
+        depth_frame          : rs.frame()
+                            The depth frame to be post-processed
+        decimation_magnitude : double
+                            The magnitude of the decimation filter
+        spatial_magnitude    : double
+                            The magnitude of the spatial filter
+        spatial_smooth_alpha : double
+                            The alpha value for spatial filter based smoothening
+        spatial_smooth_delta : double
+                            The delta value for spatial filter based smoothening
+        temporal_smooth_alpha: double
+                            The alpha value for temporal filter based smoothening
+        temporal_smooth_delta: double
+                            The delta value for temporal filter based smoothening
+        Return:
+        ----------
+        filtered_frame : rs.frame()
+                        The post-processed depth frame
+        """
+
+        # If frames not provided, get next available depth and color frames.
+        if not depth_frame:
+            depth_frame = self.get_rbg_depth_frames()['depth_frame']
+
+        # Post processing possible only on the depth_frame
+        assert (depth_frame.is_depth_frame())
+
+        # Available filters and control options for the filters
+        decimation_filter = rs.decimation_filter()
+        spatial_filter = rs.spatial_filter()
+        temporal_filter = rs.temporal_filter()
+
+        filter_magnitude = rs.option.filter_magnitude
+        filter_smooth_alpha = rs.option.filter_smooth_alpha
+        filter_smooth_delta = rs.option.filter_smooth_delta
+
+        # Apply the control parameters for the filter
+        decimation_filter.set_option(filter_magnitude, decimation_magnitude)
+
+        spatial_filter.set_option(filter_magnitude, spatial_magnitude)
+        spatial_filter.set_option(filter_smooth_alpha, spatial_smooth_alpha)
+        spatial_filter.set_option(filter_smooth_delta, spatial_smooth_delta)
+        spatial_filter.set_option(rs.option.holes_fill, 3)
+        
+        temporal_filter.set_option(filter_smooth_alpha, temporal_smooth_alpha)
+        temporal_filter.set_option(filter_smooth_delta, temporal_smooth_delta)
+
+        # Apply the filters
+        filtered_frame = decimation_filter.process(depth_frame)
+        filtered_frame = spatial_filter.process(filtered_frame)
+        filtered_frame = temporal_filter.process(filtered_frame)
+
+        return filtered_frame.as_depth_frame()
+
     def get_distance_to_frame_pixel(self, depth_frame=None, x=None, y=None):
         """
         Returns the distance measured (in Meters) to the x, y pixel of the depth_frame

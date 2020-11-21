@@ -173,7 +173,6 @@ def annotate_image_frames(np_frames, box):
         thickness = 2
         cv2.rectangle(np_frames[key], (x1, y1), (x2, y2), color, thickness)
         
-
 def save_box_bound_Image(image, saveas):
     saveas_path = os.path.join(IMAGE_SAVE_DIR, saveas)   
     cv2.imwrite(saveas_path, image)
