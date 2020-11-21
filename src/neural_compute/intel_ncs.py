@@ -4,7 +4,7 @@
 #
 # Author: Dean Colcott - https://www.linkedin.com/in/deancolcott/
 #
-# Cerdit: Intel OpenVino pPthon examples
+# Credit: Intel OpenVino Python examples
 #
 
 from __future__ import print_function
@@ -16,10 +16,7 @@ import logging
 from openvino.inference_engine import IECore
 from argparse import ArgumentParser, SUPPRESS
 
-DEVICE = "MYRIAD"   # Specify making inference on NCS MYRIAD processor
-
-# TEST_IMAGE_FILE = "../../sample-pics/faces01.jpeg"
-# IMAGE_FILE = "../../sample-pics/girl_pearl_earings.png"
+DEVICE = "MYRIAD"   # Force inference on Intel NCS MYRIAD processor on Compute Stick opposed to local CPU
 
 # Config the logger.
 log = logging.getLogger(__name__)
@@ -68,6 +65,8 @@ class IntelNcs():
         # --------------------------- Prepare input blobs -----------------------------------------------------
 
         log.info("Preparing input blobs")
+        #inputs_len = len(net.input_info.keys())
+        #assert((inputs_len == 1) or (inputs_len == 2)), "Sample code supports 1 or 2 inputs only"
         assert (len(net.input_info.keys()) == 1 or len(net.input_info.keys()) == 2), "Sample supports topologies only with 1 or 2 inputs"
         self.out_blob = next(iter(net.outputs))
         self.input_name, self.input_info_name = "", ""
@@ -80,7 +79,7 @@ class IntelNcs():
                 batch_size = net.batch_size
                 log.info("Batch size is {}".format(net.batch_size))
                 if net.batch_size != 1:
-                    raise Exception('Only supports a batch size of 1 but found: {}'.format(net.batch_size))
+                    raise Exception('Sample code supports a batch size of 1 but found: {}'.format(net.batch_size))
                 net.input_info[input_key].precision = 'U8'
             elif len(net.input_info[input_key].layout) == 2:
                 self.input_info_name = input_key
@@ -88,7 +87,6 @@ class IntelNcs():
                 if net.input_info[input_key].input_data.shape[1] != 3 and net.input_info[input_key].input_data.shape[1] != 6 or \
                     net.input_info[input_key].input_data.shape[0] != 1:
                     log.error('Invalid input info. Should be 3 or 6 values length.')
-
 
         # --------------------------- Prepare output blobs ----------------------------------------------------
         log.info('Preparing output blobs')
@@ -116,7 +114,7 @@ class IntelNcs():
         self.exec_net = ie.load_network(network=net, device_name=DEVICE)
 
 
-    def perform_inference(self, rbg, confidence_threashold):
+    def perform_inference(self, rbg, confidence_threshold):
         # --------------------------- 6. Perform Inference ---------------------------------------------
         
         # Get the inference image details
@@ -154,7 +152,7 @@ class IntelNcs():
         data = res[0][0]
 
         for number, proposal in enumerate(data):
-            if proposal[2] > confidence_threashold:
+            if proposal[2] > confidence_threshold:
                 imid = np.int(proposal[0])
                 ih, iw = images_hw[imid]
                 label = np.int(proposal[1])

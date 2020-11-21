@@ -1,8 +1,8 @@
 # realsense-simple.py
 #
 # Class to interact with the RealSense camera using mostly simple defaults and no image post processing
-# Can capture a frame and return as a Realsense frame object and provides distance to a 
-# given X,Y pixel value in the frame.  
+# Can capture a frame and return as a Realsense frame object and provides distance to a
+# given X,Y pixel value in the frame.
 #
 # Author: Dean Colcott - https://www.linkedin.com/in/deancolcott/
 #
@@ -15,7 +15,9 @@ import cv2
 
 # Config the logger.
 log = logging.getLogger(__name__)
-logging.basicConfig(format="%(asctime)s - %(name)s - [%(levelname)s] - %(message)s", stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - [%(levelname)s] - %(message)s", stream=sys.stdout, level=logging.INFO)
+
 
 class RealsenseDevice():
     """
@@ -25,7 +27,7 @@ class RealsenseDevice():
     def __init__(self):
 
         log.info('Initialising RealSense Camera')
-        # Configure RealSense device, 
+        # Configure RealSense device,
         self.pipeline = rs.pipeline()
         config = rs.config()
         profile = config.resolve(self.pipeline)
@@ -39,7 +41,8 @@ class RealsenseDevice():
 
         self.rs_name = profile.get_device().get_info(rs.camera_info.name)
         self.rs_serial = profile.get_device().get_info(rs.camera_info.serial_number)
-        log.info('Successfully Initialised {} - Serial:{}'.format(self.rs_name, self.rs_serial))
+        log.info(
+            'Successfully Initialised {} - Serial:{}'.format(self.rs_name, self.rs_serial))
 
     def get_device_name(self):
         return self.rs_name
@@ -70,7 +73,7 @@ class RealsenseDevice():
         if not color_frame:
             raise Exception('Color Frame requested but not available')
 
-        return {'color_frame' : color_frame, 'depth_frame' : depth_frame}
+        return {'color_frame': color_frame, 'depth_frame': depth_frame}
 
     def get_frames_as_np_array(self, frames=None):
         """
@@ -87,14 +90,15 @@ class RealsenseDevice():
             frames = self.get_rbg_depth_frames()
 
         # Convert frames to numpy arrays
-        np_arrays = {} 
+        np_arrays = {}
         for key in frames:
             frame = frames[key]
             if frame.is_depth_frame():
-                np_arrays[key + "_np"] =  np.asanyarray(rs.colorizer().colorize(frame).get_data())
+                np_arrays[key + "_np"] = np.asanyarray(
+                    rs.colorizer().colorize(frame).get_data())
             else:
                 np_arrays[key + "_np"] = np.asanyarray(frame.get_data())
-        
+
         return np_arrays
 
     def get_distance_to_frame_pixel(self, depth_frame=None, x=None, y=None):
@@ -114,13 +118,13 @@ class RealsenseDevice():
         # If not x or y set then set to center of given image plane
         if not x:
             x = int(depth_frame.get_width() / 2)
-        
+
         if not y:
             y = int(depth_frame.get_height() / 2)
 
         zDepth = depth_frame.get_distance(x, y)
         zDepth = '{:.3f}'.format(zDepth)
-        return zDepth
+        return float(zDepth)
 
     def get_resize_np_array(self, width, height, frames=None):
         """
@@ -147,14 +151,14 @@ class RealsenseDevice():
         for key in frames:
             frame = frames[key]
             if frame.is_depth_frame():
-                np_arrays[key + "_resized"] =  np.asanyarray(rs.colorizer().colorize(frame).get_data())
+                np_arrays[key + "_resized"] = np.asanyarray(
+                    rs.colorizer().colorize(frame).get_data())
             else:
                 np_arrays[key + "_resized"] = np.asanyarray(frame.get_data())
-        
+
         return np_arrays
-    
+
     def close_realsense_connection(self):
         self.pipeline.stop()
-        log.info('RealSense pipeline successfully closed for {} - Serial {}'.format(self.rs_name, self.rs_serial))
-
-    
+        log.info('RealSense pipeline successfully closed for {} - Serial {}'.format(
+            self.rs_name, self.rs_serial))

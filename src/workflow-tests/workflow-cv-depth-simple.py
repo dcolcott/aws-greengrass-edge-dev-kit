@@ -99,30 +99,47 @@ def workflow_realsense_simple():
                 rbg = rs_frames_np['color_frame_np']
                 depth_colormap = rs_frames_np['depth_frame_np']
 
-                log.info('Performing Inference.........')
-                boxes = ncs.perform_inference(rbg, confidence_threshold) 
-                
-                if(len(boxes) <= 0):
-                    log.info("No Objected Detected / Found")
-                else:
-                    log.info("Found / Detected: {} objects".format(len(boxes)))
-                    box = boxes[0][0]
-                    center_pt = get_box_center(box)
-                    log.info('Calculating depth to first object at: {}'.format(center_pt))
+                # Peform object detect inference which is returned as dict of detected classes 
+                # holdng an array of detected object box coordinates such as: 
+                # {"0": [[446, 290, 515, 380], [602, 96, 625, 121]]}
+                log.info('Performing Inference against rbg frame.........')
+                inf_result = ncs.perform_inference(rbg, confidence_threshold) 
 
-                    zDepth = rs.get_distance_to_frame_pixel(rs_frames['depth_frame'], center_pt['x'], center_pt['y'])
-                    log.info('Detected an object at: {} meters\n'.format(zDepth))
+                # For each class identified by the object detection model, get the distance to each 
+                # identified object and annotate the image with boxes and class / distance labels 
+                for obj_class in inf_result:
 
-                    # Uncomment below to save the latest processed (box-bound) image and depth colour map locally if desired
-                    # Note: Be careful if saving unique image names with a high loop count as will quickly fill up a Pi disk
-                    save_box_bound_Image(rbg, "image.bmp", boxes[0], "Person: {} meters".format(zDepth))
-                    save_box_bound_Image(depth_colormap, "colormap.bmp", boxes[0], "Person: {} meters".format(zDepth))
+                    for box in inf_result[obj_class]:
+                        
+                        # Get center of detected object box bounding
+                        x1, y1, x2, y2 = box
+                        x_center = int(x1 + ((x2 - x1) / 2))
+                        y_center = int(y1 + ((y2 - y1) / 2))
 
-                    # Inc image processed count
-                    image_cnt += 1
+                        # Get distance to center of detected object box bounding
+                        zDepth = rs.get_distance_to_frame_pixel(rs_frames['depth_frame'], x_center, y_center)
+                        log.debug('Identified Object Class: {} Distance: {} Object Co-ordinates: {}'.format(obj_class, zDepth, box))
 
-                    # Add a sleep delay between taking next frames.
-                    time.sleep(sleep_iteration)
+                        # append box coordinates with depth to object and object class
+                        box.append(obj_class)
+                        box.append(zDepth)
+
+                        # Annotate the box and distance label to the respective frames
+                        annotate_image_frames(rs_frames_np, box)
+
+                # Log the image inference results
+                log.info('Image Infrence result: {}'.format(inf_result))
+
+                # Uncomment below to save the latest processed (box-bound) image and depth colour map locally if desired
+                # Note: Be careful if saving unique image names with a high loop count as will quickly fill up the local disk
+                save_box_bound_Image(rbg, "image.bmp")
+                save_box_bound_Image(depth_colormap, "colormap.bmp")
+
+                # Inc image processed count
+                image_cnt += 1
+
+                # Add a sleep delay between taking next frames.
+                time.sleep(sleep_iteration)
 
             except KeyboardInterrupt:
                 total_time = time.time() - start
@@ -136,30 +153,30 @@ def workflow_realsense_simple():
     finally:
         print('Closing RealSense Connection......')
         rs.close_realsense_connection()
-    
 
-def save_box_bound_Image(image, saveas, boxes, annotation=None):
+def annotate_image_frames(np_frames, box):
 
-    saveas_path = os.path.join(IMAGE_SAVE_DIR, saveas)
+    x1, y1, x2, y2, obj_class, distance = box
 
-    for box in boxes:
-        cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (0, 0, 255), 2)
-
-    if annotation:
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        org = (box[0], box[1] - 5)
-        fontScale = 0.75
-        color = (0, 0, 255)
-        thickness = 1
-        image = cv2.putText(image, annotation, org, font, fontScale, color, thickness, cv2.LINE_AA) 
+    for key in np_frames:
         
-    cv2.imwrite(saveas_path, image)
+        # Annotate the image label with object class and distance
+        label = '{} : {} meters'.format(obj_class, distance)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        org = (x1, y1 - 5)
+        fontScale = 0.5
+        color = (0, 0, 255)
+        weight = 1
+        cv2.putText(np_frames[key], label, org, font, fontScale, color, weight, cv2.LINE_AA) 
 
-def get_box_center(box):
-    xmin, ymin, xmax, ymax = box
-    x_center = int(xmin + ((xmax - xmin) / 2))
-    y_center = int(ymin + ((ymax - ymin) / 2))
-    return {'x': x_center, 'y': y_center}
+        # Annotate the object bounding box
+        thickness = 2
+        cv2.rectangle(np_frames[key], (x1, y1), (x2, y2), color, thickness)
+        
+
+def save_box_bound_Image(image, saveas):
+    saveas_path = os.path.join(IMAGE_SAVE_DIR, saveas)   
+    cv2.imwrite(saveas_path, image)
 
 if __name__ == "__main__":
 
