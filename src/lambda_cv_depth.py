@@ -42,7 +42,6 @@ import json
 import time
 import logging
 import traceback
-import subprocess
 import greengrasssdk
 from threading import Timer
 
@@ -196,7 +195,7 @@ def depth_measure_workflow():
                     annotate_image_frames(rs_frames_np, box)
 
             # Log the image inference results
-            post_log( json.dumps({ 'inference_result' : inf_result }), 'edge-dev-kit/edge-cv/depth/'.format(rs_serial))
+            post_log( json.dumps({ 'inference_result' : inf_result }), 'edge-dev-kit/edge-cv/depth/{}'.format(rs_serial))
  
             # Uncomment below to save the latest processed (box-bound) image and depth colour map locally if desired
             # Note: Be careful if saving unique image names with a high loop count as will quickly fill up the local disk
